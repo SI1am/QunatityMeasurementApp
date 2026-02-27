@@ -136,4 +136,30 @@ public class QuantityMeasurementAppTest {
         assertEquals(feet, inches);
         assertEquals(yard, inches);
     }
+    @Test
+    public void testConversion_FeetToInches() {
+        double result = Length.convert(1.0,
+                Length.LengthUnit.FEET,
+                Length.LengthUnit.INCHES);
+
+        assertEquals(12.0, result, 1e-6);
+    }
+
+    @Test
+    public void testConversion_YardsToFeet() {
+        double result = Length.convert(3.0,
+                Length.LengthUnit.YARDS,
+                Length.LengthUnit.FEET);
+
+        assertEquals(9.0, result, 1e-6);
+    }
+
+    @Test
+    public void testConversion_CentimetersToInches() {
+        double result = Length.convert(2.54,
+        		Length.LengthUnit.CENTIMETERS,
+                Length.LengthUnit.INCHES);
+
+        assertEquals(1.0, result, 1e-6);
+    }
 }

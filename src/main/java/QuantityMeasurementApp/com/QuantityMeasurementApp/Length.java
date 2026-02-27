@@ -18,7 +18,7 @@ public class Length {
 			return conversionFactor;
 		}
 		
-			
+		
 	}
 	public Length (double val , LengthUnit unit) {
 		if(unit==null) throw new IllegalArgumentException("Null Unit is not acceptable.");
@@ -28,8 +28,8 @@ public class Length {
 		
 	}
 	private double toBaseUnit() {
-        return val*unit.getConversionFactor();
-    }
+		return val*unit.getConversionFactor();
+	}
 	
 	public boolean equals(Object obj) {
 		if(this==obj) return true;
@@ -42,12 +42,33 @@ public class Length {
 	}
 	
 	@Override
-    public int hashCode() {
-        return Objects.hash(toBaseUnit());
+	public int hashCode() {
+		return Objects.hash(toBaseUnit());
+	}
+	
+	@Override
+	public String toString() {
+		return val + " " + unit.name().toLowerCase();
+	}
+	
+	public static double convert(double value,LengthUnit source,LengthUnit target) {
+		
+		if (source == null || target == null) {			
+			throw new IllegalArgumentException("Units cannot be null");
+		}
+		
+		if (!Double.isFinite(value)) {
+			
+			throw new IllegalArgumentException("Value must be finite");
+		}
+		
+		double base =value*source.getConversionFactor();
+		return base/target.getConversionFactor();
+	}
+	public Length convertTo(LengthUnit target) {
+        double newValue =convert(this.val, this.unit,target);
+        return new Length(newValue,target);
     }
-
-    @Override
-    public String toString() {
-        return val + " " + unit.name().toLowerCase();
-    }
+	
+	
 }

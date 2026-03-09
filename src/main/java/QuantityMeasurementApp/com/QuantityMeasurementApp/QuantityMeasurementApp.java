@@ -10,30 +10,31 @@ public class QuantityMeasurementApp {
 
         while (true) {
 
-
+            System.out.println("\nQuantity Measurement Tool");
             System.out.println("1. Compare Lengths");
             System.out.println("2. Convert Length");
-            System.out.println("3. Exit");
+            System.out.println("3. Add Lengths");
+            System.out.println("4. Exit");
             System.out.print("Choose option: ");
 
             String option = sc.nextLine();
 
-            if (option.equals("3")) {
+            if (option.equals("4")) {
                 System.out.println("Exited");
                 break;
             }
 
             try {
 
-
-            	//comparison here 
+                // Comparison
                 if (option.equals("1")) {
 
                     System.out.print("\nEnter first value: ");
                     double v1 = Double.parseDouble(sc.nextLine());
 
                     System.out.print("Enter unit (FEET/INCHES/YARDS/CENTIMETERS): ");
-                    Length.LengthUnit u1 = Length.LengthUnit.valueOf(sc.nextLine().trim().toUpperCase());
+                    Length.LengthUnit u1 = Length.LengthUnit.valueOf(
+                            sc.nextLine().trim().toUpperCase());
 
                     Length l1 = new Length(v1, u1);
 
@@ -41,7 +42,8 @@ public class QuantityMeasurementApp {
                     double v2 = Double.parseDouble(sc.nextLine());
 
                     System.out.print("Enter unit (FEET/INCHES/YARDS/CENTIMETERS): ");
-                    Length.LengthUnit u2 = Length.LengthUnit.valueOf(sc.nextLine().trim().toUpperCase());
+                    Length.LengthUnit u2 = Length.LengthUnit.valueOf(
+                            sc.nextLine().trim().toUpperCase());
 
                     Length l2 = new Length(v2, u2);
 
@@ -52,7 +54,7 @@ public class QuantityMeasurementApp {
                     System.out.println("Output: Equal (" + result + ")");
                 }
 
-//Conversion here 
+                // Conversion
                 else if (option.equals("2")) {
 
                     System.out.print("\nEnter value to convert: ");
@@ -60,13 +62,11 @@ public class QuantityMeasurementApp {
 
                     System.out.print("Enter source unit (FEET/INCHES/YARDS/CENTIMETERS): ");
                     Length.LengthUnit source = Length.LengthUnit.valueOf(
-                            sc.nextLine().trim().toUpperCase()
-                    );
+                            sc.nextLine().trim().toUpperCase());
 
                     System.out.print("Enter target unit (FEET/INCHES/YARDS/CENTIMETERS): ");
                     Length.LengthUnit target = Length.LengthUnit.valueOf(
-                            sc.nextLine().trim().toUpperCase()
-                    );
+                            sc.nextLine().trim().toUpperCase());
 
                     double result = Length.convert(value, source, target);
 
@@ -75,12 +75,40 @@ public class QuantityMeasurementApp {
                     System.out.println("Output: " + result + " " + target.name().toLowerCase());
                 }
 
+                //UC6 Addition
+                else if (option.equals("3")) {
+
+                    System.out.print("\nEnter first value: ");
+                    double v1 = Double.parseDouble(sc.nextLine());
+
+                    System.out.print("Enter unit (FEET/INCHES/YARDS/CENTIMETERS): ");
+                    Length.LengthUnit u1 = Length.LengthUnit.valueOf(
+                            sc.nextLine().trim().toUpperCase());
+
+                    Length l1 = new Length(v1, u1);
+
+                    System.out.print("\nEnter second value: ");
+                    double v2 = Double.parseDouble(sc.nextLine());
+
+                    System.out.print("Enter unit (FEET/INCHES/YARDS/CENTIMETERS): ");
+                    Length.LengthUnit u2 = Length.LengthUnit.valueOf(
+                            sc.nextLine().trim().toUpperCase());
+
+                    Length l2 = new Length(v2, u2);
+
+                    Length result = l1.add(l2);
+
+                    System.out.println("\nAddition Result:");
+                    System.out.println("Input: " + l1 + " + " + l2);
+                    System.out.println("Output: " + result);
+                }
+
                 else {
-                    System.out.println("Invalid option. Please choose 1, 2, or 3.");
+                    System.out.println("Invalid option. Please choose 1, 2, 3, or 4.");
                 }
 
             } catch (Exception e) {
-                System.out.println("Error: "+ e.getMessage());
+                System.out.println("Error: " + e.getMessage());
             }
         }
 

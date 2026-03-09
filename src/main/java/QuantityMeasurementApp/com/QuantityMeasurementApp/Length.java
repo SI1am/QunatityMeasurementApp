@@ -70,5 +70,22 @@ public class Length {
         return new Length(newValue,target);
     }
 	
+	 public Length add(Length other) {
+
+        if (other == null)
+            throw new IllegalArgumentException("Second operand cannot be null");
+
+        if (!Double.isFinite(this.val) || !Double.isFinite(other.val))
+            throw new IllegalArgumentException("Values must be finite numbers");
+
+        double base1 = this.toBaseUnit();
+        double base2 = other.toBaseUnit();
+
+        double sumBase = base1 + base2;
+
+        double resultValue = sumBase / this.unit.getConversionFactor();
+
+        return new Length(resultValue, this.unit);
+    }
 	
 }

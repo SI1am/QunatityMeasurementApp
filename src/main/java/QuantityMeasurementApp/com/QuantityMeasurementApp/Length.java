@@ -31,14 +31,18 @@ public class Length {
 		return val*unit.getConversionFactor();
 	}
 	
+	@Override
 	public boolean equals(Object obj) {
-		if(this==obj) return true;
-		if(!(obj instanceof Length)) return false;
-		
-		Length curr = (Length)obj;
-//		return Double.compare(this.toBaseUnit(), that.toBaseUnit()) == 0;
-		return Double.compare(this.toBaseUnit() ,curr.toBaseUnit())==0;
-		
+
+	    if (this == obj) return true;
+
+	    if (!(obj instanceof Length)) return false;
+
+	    Length other = (Length) obj;
+
+	    double EPSILON = 1e-6;
+
+	    return Math.abs(this.toBaseUnit() - other.toBaseUnit()) < EPSILON;
 	}
 	
 	@Override
@@ -70,10 +74,22 @@ public class Length {
         return new Length(newValue,target);
     }
 	
-	 public Length add(Length other) {
+	public Length add(Length other) {
 
         if (other == null)
             throw new IllegalArgumentException("Second operand cannot be null");
+
+        return add(other, this.unit);
+    }
+
+    // UC7 : Addition with explicit target unit
+    public Length add(Length other, LengthUnit targetUnit) {
+
+        if (other == null)
+            throw new IllegalArgumentException("Second operand cannot be null");
+
+        if (targetUnit == null)
+            throw new IllegalArgumentException("Target unit cannot be null");
 
         if (!Double.isFinite(this.val) || !Double.isFinite(other.val))
             throw new IllegalArgumentException("Values must be finite numbers");
@@ -81,11 +97,10 @@ public class Length {
         double base1 = this.toBaseUnit();
         double base2 = other.toBaseUnit();
 
-        double sumBase = base1 + base2;
+        double sumBase = base1+base2;
 
-        double resultValue = sumBase / this.unit.getConversionFactor();
+        double resultValue = sumBase/targetUnit.getConversionFactor();
 
-        return new Length(resultValue, this.unit);
+        return new Length(resultValue, targetUnit);
     }
-	
 }

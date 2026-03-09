@@ -13,20 +13,21 @@ public class QuantityMeasurementApp {
             System.out.println("\nQuantity Measurement Tool");
             System.out.println("1. Compare Lengths");
             System.out.println("2. Convert Length");
-            System.out.println("3. Add Lengths");
-            System.out.println("4. Exit");
+            System.out.println("3. Add Lengths (UC6)");
+            System.out.println("4. Add Lengths with Target Unit (UC7)");
+            System.out.println("5. Exit");
             System.out.print("Choose option: ");
 
             String option = sc.nextLine();
 
-            if (option.equals("4")) {
+            if (option.equals("5")) {
                 System.out.println("Exited");
                 break;
             }
 
             try {
 
-                // Comparison
+                // UC5 Comparison
                 if (option.equals("1")) {
 
                     System.out.print("\nEnter first value: ");
@@ -54,17 +55,17 @@ public class QuantityMeasurementApp {
                     System.out.println("Output: Equal (" + result + ")");
                 }
 
-                // Conversion
+                // UC5 Conversion
                 else if (option.equals("2")) {
 
                     System.out.print("\nEnter value to convert: ");
                     double value = Double.parseDouble(sc.nextLine());
 
-                    System.out.print("Enter source unit (FEET/INCHES/YARDS/CENTIMETERS): ");
+                    System.out.print("Enter source unit: ");
                     Length.LengthUnit source = Length.LengthUnit.valueOf(
                             sc.nextLine().trim().toUpperCase());
 
-                    System.out.print("Enter target unit (FEET/INCHES/YARDS/CENTIMETERS): ");
+                    System.out.print("Enter target unit: ");
                     Length.LengthUnit target = Length.LengthUnit.valueOf(
                             sc.nextLine().trim().toUpperCase());
 
@@ -75,13 +76,13 @@ public class QuantityMeasurementApp {
                     System.out.println("Output: " + result + " " + target.name().toLowerCase());
                 }
 
-                //UC6 Addition
+                // UC6 Addition
                 else if (option.equals("3")) {
 
                     System.out.print("\nEnter first value: ");
                     double v1 = Double.parseDouble(sc.nextLine());
 
-                    System.out.print("Enter unit (FEET/INCHES/YARDS/CENTIMETERS): ");
+                    System.out.print("Enter unit: ");
                     Length.LengthUnit u1 = Length.LengthUnit.valueOf(
                             sc.nextLine().trim().toUpperCase());
 
@@ -90,7 +91,7 @@ public class QuantityMeasurementApp {
                     System.out.print("\nEnter second value: ");
                     double v2 = Double.parseDouble(sc.nextLine());
 
-                    System.out.print("Enter unit (FEET/INCHES/YARDS/CENTIMETERS): ");
+                    System.out.print("Enter unit: ");
                     Length.LengthUnit u2 = Length.LengthUnit.valueOf(
                             sc.nextLine().trim().toUpperCase());
 
@@ -98,13 +99,46 @@ public class QuantityMeasurementApp {
 
                     Length result = l1.add(l2);
 
-                    System.out.println("\nAddition Result:");
+                    System.out.println("\nAddition Result (UC6):");
                     System.out.println("Input: " + l1 + " + " + l2);
                     System.out.println("Output: " + result);
                 }
 
+                // UC7 Addition with target unit
+                else if (option.equals("4")) {
+
+                    System.out.print("\nEnter first value: ");
+                    double v1 = Double.parseDouble(sc.nextLine());
+
+                    System.out.print("Enter unit: ");
+                    Length.LengthUnit u1 = Length.LengthUnit.valueOf(
+                            sc.nextLine().trim().toUpperCase());
+
+                    Length l1 = new Length(v1, u1);
+
+                    System.out.print("\nEnter second value: ");
+                    double v2 = Double.parseDouble(sc.nextLine());
+
+                    System.out.print("Enter unit: ");
+                    Length.LengthUnit u2 = Length.LengthUnit.valueOf(
+                            sc.nextLine().trim().toUpperCase());
+
+                    Length l2 = new Length(v2, u2);
+
+                    System.out.print("\nEnter target unit: ");
+                    Length.LengthUnit target = Length.LengthUnit.valueOf(
+                            sc.nextLine().trim().toUpperCase());
+
+                    Length result = l1.add(l2, target);
+
+                    System.out.println("\nAddition Result (UC7):");
+                    System.out.println("Input: " + l1 + " + " + l2);
+                    System.out.println("Target Unit: " + target.name().toLowerCase());
+                    System.out.println("Output: " + result);
+                }
+
                 else {
-                    System.out.println("Invalid option. Please choose 1, 2, 3, or 4.");
+                    System.out.println("Invalid option.");
                 }
 
             } catch (Exception e) {

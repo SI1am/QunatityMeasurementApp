@@ -40,33 +40,10 @@ public class Quantity<U extends IMeasurable> {
 
 
 
-    private enum ArithmeticOperation {
-
-        ADD((a, b) -> a + b),
-        SUBTRACT((a, b) -> a - b),
-        DIVIDE((a, b) -> {
-            if (b ==0)
-                throw new ArithmeticException("Cannot divide by zero");
-            return a/b;
-        });
-
-        private final java.util.function.DoubleBinaryOperator operator;
-
-        ArithmeticOperation(java.util.function.DoubleBinaryOperator operator) {
-            this.operator = operator;
-        }
-
-        public double compute(double a, double b) {
-            return operator.applyAsDouble(a, b);
-        }
-    }
-
-
-
     private void validateArithmeticOperands(Quantity<U> other, U targetUnit, boolean targetUnitRequired) {
 
         if (other == null)
-            throw new IllegalArgumentException("Other quantity cannot be null");
+            throw new IllegalArgumentException("Operand cannot be null");
 
         if (!this.unit.getClass().equals(other.unit.getClass()))
             throw new IllegalArgumentException("Incompatible quantity types");
@@ -123,6 +100,7 @@ public class Quantity<U extends IMeasurable> {
     }
 
 
+    
     public Quantity<U> subtract(Quantity<U> other) {
 
         validateArithmeticOperands(other, unit, false);
@@ -144,7 +122,6 @@ public class Quantity<U extends IMeasurable> {
     }
 
 
-
     public double divide(Quantity<U> other) {
 
         validateArithmeticOperands(other, null, false);
@@ -153,7 +130,7 @@ public class Quantity<U extends IMeasurable> {
     }
 
 
-
+    
     @Override
     public boolean equals(Object obj) {
 

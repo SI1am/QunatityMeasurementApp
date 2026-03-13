@@ -5,7 +5,7 @@ package QuantityMeasurementApp.com.QuantityMeasurementApp;
 public enum LengthUnit implements IMeasurable {
 
     FEET(1.0),
-    INCHES(1.0 / 12.0),
+    INCHES(1.0/12.0),
     YARDS(3.0),
     CENTIMETERS(0.0328084);
 
@@ -34,6 +34,18 @@ public enum LengthUnit implements IMeasurable {
     public String getUnitName() {
         return name();
     }
+
+	@Override
+	public boolean supportsArithmetic() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void validateOperationSupport(String operation) {
+		// TODO Auto-generated method stub
+		
+	}
 
 
 }

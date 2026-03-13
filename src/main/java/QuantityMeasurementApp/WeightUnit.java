@@ -34,5 +34,17 @@ public enum WeightUnit implements IMeasurable {
         return name();
     }
 
+	@Override
+	public boolean supportsArithmetic() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void validateOperationSupport(String operation) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

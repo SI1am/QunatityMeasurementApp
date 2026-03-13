@@ -81,8 +81,8 @@ public class Quantity<U extends IMeasurable> {
 
     public Quantity<U> add(Quantity<U> other) {
 
+        unit.validateOperationSupport("addition");
         validateArithmeticOperands(other, unit, false);
-
         double resultBase = performBaseArithmetic(other, ArithmeticOperation.ADD);
         double result = unit.convertFromBaseUnit(resultBase);
 
@@ -103,11 +103,10 @@ public class Quantity<U extends IMeasurable> {
     
     public Quantity<U> subtract(Quantity<U> other) {
 
+        unit.validateOperationSupport("subtraction");
         validateArithmeticOperands(other, unit, false);
-
         double resultBase = performBaseArithmetic(other, ArithmeticOperation.SUBTRACT);
         double result = unit.convertFromBaseUnit(resultBase);
-
         return new Quantity<>(round(result), unit);
     }
 
@@ -124,8 +123,8 @@ public class Quantity<U extends IMeasurable> {
 
     public double divide(Quantity<U> other) {
 
+        unit.validateOperationSupport("division");
         validateArithmeticOperands(other, null, false);
-
         return performBaseArithmetic(other, ArithmeticOperation.DIVIDE);
     }
 

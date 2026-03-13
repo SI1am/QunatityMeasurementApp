@@ -1,7 +1,5 @@
 package QuantityMeasurementApp.com.QuantityMeasurementApp;
 
-
-
 public interface IMeasurable {
 
     double getConversionFactor();
@@ -12,5 +10,7 @@ public interface IMeasurable {
 
     String getUnitName();
 
+    boolean supportsArithmetic();
 
+    void validateOperationSupport(String operation);
 }

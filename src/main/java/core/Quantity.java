@@ -1,7 +1,7 @@
-package QuantityMeasurementApp.com.QuantityMeasurementApp;
+package core;
 
 import java.util.Objects;
-
+import units.*;
 public class Quantity<U extends IMeasurable> {
 
     private final double value;

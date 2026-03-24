@@ -1,4 +1,4 @@
-package QuantityMeasurementApp.com.QuantityMeasurementApp;
+package units;
 
 public interface IMeasurable {
 

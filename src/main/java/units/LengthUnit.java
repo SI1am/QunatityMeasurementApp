@@ -1,11 +1,9 @@
-package QuantityMeasurementApp.com.QuantityMeasurementApp;
-
-
+package units;
 
 public enum LengthUnit implements IMeasurable {
 
     FEET(1.0),
-    INCHES(1.0/12.0),
+    INCHES(1.0 / 12.0),
     YARDS(3.0),
     CENTIMETERS(0.0328084);
 
@@ -35,17 +33,27 @@ public enum LengthUnit implements IMeasurable {
         return name();
     }
 
-	@Override
-	public boolean supportsArithmetic() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean supportsArithmetic() {
+        return true;
+    }
 
-	@Override
-	public void validateOperationSupport(String operation) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void validateOperationSupport(String operation) {
 
+        switch (operation.toUpperCase()) {
 
+            case "ADD":
+            case "SUBTRACT":
+            case "DIVIDE":
+            case "COMPARE":
+            case "CONVERT":
+                return;
+
+            default:
+                throw new UnsupportedOperationException(
+                        "Operation not supported: " + operation
+                );
+        }
+    }
 }

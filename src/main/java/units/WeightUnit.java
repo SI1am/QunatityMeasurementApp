@@ -1,6 +1,4 @@
-package QuantityMeasurementApp.com.QuantityMeasurementApp;
-
-
+package units;
 
 public enum WeightUnit implements IMeasurable {
 
@@ -34,17 +32,27 @@ public enum WeightUnit implements IMeasurable {
         return name();
     }
 
-	@Override
-	public boolean supportsArithmetic() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean supportsArithmetic() {
+        return true;
+    }
 
-	@Override
-	public void validateOperationSupport(String operation) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void validateOperationSupport(String operation) {
 
+        switch (operation.toUpperCase()) {
 
+            case "ADD":
+            case "SUBTRACT":
+            case "DIVIDE":
+            case "COMPARE":
+            case "CONVERT":
+                return;
+
+            default:
+                throw new UnsupportedOperationException(
+                        "Operation not supported: " + operation
+                );
+        }
+    }
 }

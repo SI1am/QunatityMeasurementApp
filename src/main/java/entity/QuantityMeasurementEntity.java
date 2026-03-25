@@ -1,69 +1,145 @@
 package entity;
 
-import dto.QuantityDTO;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 public class QuantityMeasurementEntity implements Serializable {
 
-    private String operation;
-    private QuantityDTO operand1;
-    private QuantityDTO operand2;
-    private Object result;
+    private int id;
+    private String measurementType;
+    private String operationType;
+    private double value1;
+    private double value2;
+    private double resultValue;
+    private boolean resultStatus;
     private String error;
+    private Timestamp createdAt;
 
-    public QuantityMeasurementEntity(QuantityDTO operand1, String operation, Object result) {
-        this.operand1 = operand1;
-        this.operation = operation;
-        this.result = result;
+    public QuantityMeasurementEntity() {
     }
 
-    public QuantityMeasurementEntity(QuantityDTO operand1, QuantityDTO operand2, String operation, Object result) {
-        this.operand1 = operand1;
-        this.operand2 = operand2;
-        this.operation = operation;
-        this.result = result;
+    public QuantityMeasurementEntity(String measurementType, String operationType,
+                                     double value1, double value2,
+                                     double resultValue, boolean resultStatus) {
+        this.measurementType = measurementType;
+        this.operationType = operationType;
+        this.value1 = value1;
+        this.value2 = value2;
+        this.resultValue = resultValue;
+        this.resultStatus = resultStatus;
     }
 
-    public QuantityMeasurementEntity(String operation, String error) {
-        this.operation = operation;
+    public QuantityMeasurementEntity(String measurementType, String operationType,
+                                     double value1, double value2,
+                                     double resultValue, boolean resultStatus,
+                                     String error) {
+        this.measurementType = measurementType;
+        this.operationType = operationType;
+        this.value1 = value1;
+        this.value2 = value2;
+        this.resultValue = resultValue;
+        this.resultStatus = resultStatus;
         this.error = error;
     }
 
-    // -------- GETTERS --------
+    // ---------------- GETTERS & SETTERS ----------------
 
-    public String getOperation() {
-        return operation;
+    public int getId() {
+        return id;
     }
 
-    public QuantityDTO getOperand1() {
-        return operand1;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public QuantityDTO getOperand2() {
-        return operand2;
+
+    public String getMeasurementType() {
+        return measurementType;
     }
 
-    public Object getResult() {
-        return result;
+    public void setMeasurementType(String measurementType) {
+        this.measurementType = measurementType;
     }
+
+
+    public String getOperationType() {
+        return operationType;
+    }
+
+    public void setOperationType(String operationType) {
+        this.operationType = operationType;
+    }
+
+
+    public double getValue1() {
+        return value1;
+    }
+
+    public void setValue1(double value1) {
+        this.value1 = value1;
+    }
+
+
+    public double getValue2() {
+        return value2;
+    }
+
+    public void setValue2(double value2) {
+        this.value2 = value2;
+    }
+
+
+    public double getResultValue() {
+        return resultValue;
+    }
+
+    public void setResultValue(double resultValue) {
+        this.resultValue = resultValue;
+    }
+
+
+    public boolean isResultStatus() {
+        return resultStatus;
+    }
+
+    public void setResultStatus(boolean resultStatus) {
+        this.resultStatus = resultStatus;
+    }
+
 
     public String getError() {
         return error;
     }
 
+    public void setError(String error) {
+        this.error = error;
+    }
+
     public boolean hasError() {
-        return error != null;
+        return error != null && !error.isEmpty();
+    }
+
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
     public String toString() {
-        if (error != null) {
-            return "Operation: " + operation + " ERROR: " + error;
-        }
-
-        return "Operation: " + operation +
-                " Operand1: " + operand1 +
-                " Operand2: " + operand2 +
-                " Result: " + result;
+        return "QuantityMeasurementEntity{" +
+                "id=" + id +
+                ", measurementType='" + measurementType + '\'' +
+                ", operationType='" + operationType + '\'' +
+                ", value1=" + value1 +
+                ", value2=" + value2 +
+                ", resultValue=" + resultValue +
+                ", resultStatus=" + resultStatus +
+                ", error='" + error + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }

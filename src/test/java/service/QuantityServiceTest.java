@@ -1,4 +1,4 @@
-package QuantityMeasurementApp.com.QuantityMeasurementApp;
+package service;
 import dto.QuantityDTO;
 import exception.QuantityMeasurementException;
 

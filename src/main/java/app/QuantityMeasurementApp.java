@@ -8,37 +8,67 @@ import service.*;
 
 import java.util.Scanner;
 
+import utils.ApplicationConfig;
 public class QuantityMeasurementApp {
 
     private static final Scanner scanner = new Scanner(System.in);
+    private final IQuantityMeasurementRepository repository;
+    private final QuantityMeasurementController controller;
 
-    public static void main(String[] args) throws QuantityMeasurementException {
+    public QuantityMeasurementApp() {
+        this.repository = initializeRepository();
+        IQuantityMeasurementService service = new QuantityMeasurementServiceImpl(repository);
+        this.controller = new QuantityMeasurementController(service);
+    }
 
-        var repository = QuantityMeasurementCacheRepository.getInstance();
+    private IQuantityMeasurementRepository initializeRepository() {
+        String repoType = ApplicationConfig.getRepositoryType();
 
-        IQuantityMeasurementService service =
-                new QuantityMeasurementServiceImpl(repository);
+        if ("DATABASE".equalsIgnoreCase(repoType)) {
+            System.out.println("Using Database Repository...");
+            return (IQuantityMeasurementRepository) new QuantityMeasurementDatabaseRepository();
+        } else {
+            System.out.println("Using Cache Repository...");
+            return QuantityMeasurementCacheRepository.getInstance();
+        }
+    }
 
-        QuantityMeasurementController controller =
-                new QuantityMeasurementController(service);
+    public void run() {
+        try {
+            while (true) {
+                System.out.println("\n====== Quantity Measurement System ======");
+                System.out.println("1. Compare Quantities");
+                System.out.println("2. Convert Quantity");
+                System.out.println("3. Add Quantities");
+                System.out.println("4. Subtract Quantities");
+                System.out.println("5. Divide Quantities");
+                System.out.println("6. Show Total Saved Measurements");
+                System.out.println("7. Show Repository Statistics");
+                System.out.println("8. Delete All Measurements");
+                System.out.println("9. Exit");
 
-        while (true) {
+                int operation = readInt("Choose operation: ");
 
-            System.out.println("\n====== Quantity Measurement System ======");
-            System.out.println("1. Compare Quantities");
-            System.out.println("2. Convert Quantity");
-            System.out.println("3. Add Quantities");
-            System.out.println("4. Subtract Quantities");
-            System.out.println("5. Divide Quantities");
-            System.out.println("6. Exit");
+                if (operation == 9) {
+                    System.out.println("Exiting...");
+                    break;
+                }
 
-            int operation = readInt("Choose operation: ");
-
-            if (operation == 6) {
-                System.out.println("Exiting...");
-                break;
+                switch (operation) {
+                    case 6 -> showTotalMeasurements();
+                    case 7 -> showRepositoryStats();
+                    case 8 -> deleteAllMeasurements();
+                    case 1, 2, 3, 4, 5 -> processMeasurementOperation(operation);
+                    default -> System.out.println("Invalid choice");
+                }
             }
+        } finally {
+            closeResources();
+        }
+    }
 
+    private void processMeasurementOperation(int operation) {
+        try {
             int typeChoice = chooseMeasurementType();
             String measurementType = getMeasurementType(typeChoice);
 
@@ -48,10 +78,9 @@ public class QuantityMeasurementApp {
             QuantityDTO q1 = new QuantityDTO(value1, unit1, measurementType);
 
             if (operation == 2) {
-
                 String targetUnit = chooseUnit(typeChoice);
                 controller.performConversion(q1, targetUnit);
-                continue;
+                return;
             }
 
             double value2 = readDouble("Enter second value: ");
@@ -60,18 +89,44 @@ public class QuantityMeasurementApp {
             QuantityDTO q2 = new QuantityDTO(value2, unit2, measurementType);
 
             switch (operation) {
-
                 case 1 -> controller.performComparison(q1, q2);
                 case 3 -> controller.performAddition(q1, q2);
                 case 4 -> controller.performSubtraction(q1, q2);
                 case 5 -> controller.performDivision(q1, q2);
-                default -> System.out.println("Invalid choice");
+                default -> System.out.println("Invalid operation");
             }
+
+        } catch (QuantityMeasurementException e) {
+            System.out.println("Operation failed: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unexpected error: " + e.getMessage());
         }
     }
 
-    private static int chooseMeasurementType() {
+    private void showTotalMeasurements() {
+        System.out.println("Total Measurements Saved: " + repository.getTotalCount());
+    }
 
+    private void showRepositoryStats() {
+        System.out.println("Repository Statistics: " + repository.getPoolStatistics());
+    }
+
+    private void deleteAllMeasurements() {
+        repository.deleteAll();
+        System.out.println("All measurements deleted successfully.");
+    }
+
+    private void closeResources() {
+        repository.releaseResources();
+        System.out.println("Resources released successfully.");
+    }
+
+    public static void main(String[] args) {
+        QuantityMeasurementApp app = new QuantityMeasurementApp();
+        app.run();
+    }
+
+    private static int chooseMeasurementType() {
         System.out.println("\nSelect Measurement Type:");
         System.out.println("1. Length");
         System.out.println("2. Weight");
@@ -82,7 +137,6 @@ public class QuantityMeasurementApp {
     }
 
     private static String getMeasurementType(int choice) {
-
         return switch (choice) {
             case 1 -> "LENGTH";
             case 2 -> "WEIGHT";
@@ -93,9 +147,7 @@ public class QuantityMeasurementApp {
     }
 
     private static String chooseUnit(int typeChoice) {
-
         switch (typeChoice) {
-
             case 1 -> {
                 System.out.println("\nLength Units:");
                 System.out.println("1. FEET");

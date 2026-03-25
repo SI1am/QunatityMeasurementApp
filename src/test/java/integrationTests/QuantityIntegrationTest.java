@@ -1,4 +1,4 @@
-package QuantityMeasurementApp.com.QuantityMeasurementApp;
+package integrationTests;
 
 
 import dto.QuantityDTO;

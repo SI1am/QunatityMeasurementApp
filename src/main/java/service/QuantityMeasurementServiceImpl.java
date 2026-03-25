@@ -7,8 +7,8 @@ import repository.IQuantityMeasurementRepository;
 import core.Quantity;
 import units.*;
 
-public class QuantityMeasurementServiceImpl
-        implements IQuantityMeasurementService {
+
+public class QuantityMeasurementServiceImpl implements IQuantityMeasurementService {
 
     private final IQuantityMeasurementRepository repository;
 
@@ -18,37 +18,47 @@ public class QuantityMeasurementServiceImpl
 
     @Override
     public boolean compare(QuantityDTO q1, QuantityDTO q2) throws QuantityMeasurementException {
-
         try {
-
             Quantity quantity1 = createQuantity(q1);
             Quantity quantity2 = createQuantity(q2);
 
             boolean result = quantity1.equals(quantity2);
 
-            QuantityMeasurementEntity entity =
-                    new QuantityMeasurementEntity(q1, q2, "COMPARE", String.valueOf(result));
+            QuantityMeasurementEntity entity = new QuantityMeasurementEntity(
+                    q1.getMeasurementType(),
+                    "COMPARE",
+                    q1.getValue(),
+                    q2.getValue(),
+                    0.0,
+                    result
+            );
 
             repository.save(entity);
 
             return result;
 
         } catch (Exception e) {
+            QuantityMeasurementEntity errorEntity = new QuantityMeasurementEntity(
+                    q1.getMeasurementType(),
+                    "COMPARE",
+                    q1.getValue(),
+                    q2.getValue(),
+                    0.0,
+                    false,
+                    e.getMessage()
+            );
+            repository.save(errorEntity);
 
-            repository.save(new QuantityMeasurementEntity("COMPARE", e.getMessage()));
             throw new QuantityMeasurementException(e.getMessage());
         }
     }
 
     @Override
     public QuantityDTO convert(QuantityDTO source, String targetUnit) throws QuantityMeasurementException {
-
         try {
-
             Quantity quantity = createQuantity(source);
 
-            IMeasurable target =
-                    resolveUnit(source.getMeasurementType(), targetUnit);
+            IMeasurable target = resolveUnit(source.getMeasurementType(), targetUnit);
 
             Quantity result = quantity.convertTo(target);
 
@@ -58,22 +68,38 @@ public class QuantityMeasurementServiceImpl
                     source.getMeasurementType()
             );
 
-            repository.save(new QuantityMeasurementEntity(source, "CONVERT", dto));
+            QuantityMeasurementEntity entity = new QuantityMeasurementEntity(
+                    source.getMeasurementType(),
+                    "CONVERT",
+                    source.getValue(),
+                    0.0,
+                    result.getValue(),
+                    true
+            );
+
+            repository.save(entity);
 
             return dto;
 
         } catch (Exception e) {
+            QuantityMeasurementEntity errorEntity = new QuantityMeasurementEntity(
+                    source.getMeasurementType(),
+                    "CONVERT",
+                    source.getValue(),
+                    0.0,
+                    0.0,
+                    false,
+                    e.getMessage()
+            );
+            repository.save(errorEntity);
 
-            repository.save(new QuantityMeasurementEntity("CONVERT", e.getMessage()));
             throw new QuantityMeasurementException(e.getMessage());
         }
     }
 
     @Override
     public QuantityDTO add(QuantityDTO q1, QuantityDTO q2) throws QuantityMeasurementException {
-
         try {
-
             Quantity quantity1 = createQuantity(q1);
             Quantity quantity2 = createQuantity(q2);
 
@@ -85,22 +111,38 @@ public class QuantityMeasurementServiceImpl
                     q1.getMeasurementType()
             );
 
-            repository.save(new QuantityMeasurementEntity(q1, q2, "ADD", dto));
+            QuantityMeasurementEntity entity = new QuantityMeasurementEntity(
+                    q1.getMeasurementType(),
+                    "ADD",
+                    q1.getValue(),
+                    q2.getValue(),
+                    result.getValue(),
+                    true
+            );
+
+            repository.save(entity);
 
             return dto;
 
         } catch (Exception e) {
+            QuantityMeasurementEntity errorEntity = new QuantityMeasurementEntity(
+                    q1.getMeasurementType(),
+                    "ADD",
+                    q1.getValue(),
+                    q2.getValue(),
+                    0.0,
+                    false,
+                    e.getMessage()
+            );
+            repository.save(errorEntity);
 
-            repository.save(new QuantityMeasurementEntity("ADD", e.getMessage()));
             throw new QuantityMeasurementException(e.getMessage());
         }
     }
 
     @Override
     public QuantityDTO subtract(QuantityDTO q1, QuantityDTO q2) throws QuantityMeasurementException {
-
         try {
-
             Quantity quantity1 = createQuantity(q1);
             Quantity quantity2 = createQuantity(q2);
 
@@ -112,52 +154,79 @@ public class QuantityMeasurementServiceImpl
                     q1.getMeasurementType()
             );
 
-            repository.save(new QuantityMeasurementEntity(q1, q2, "SUBTRACT", dto));
+            QuantityMeasurementEntity entity = new QuantityMeasurementEntity(
+                    q1.getMeasurementType(),
+                    "SUBTRACT",
+                    q1.getValue(),
+                    q2.getValue(),
+                    result.getValue(),
+                    true
+            );
+
+            repository.save(entity);
 
             return dto;
 
         } catch (Exception e) {
+            QuantityMeasurementEntity errorEntity = new QuantityMeasurementEntity(
+                    q1.getMeasurementType(),
+                    "SUBTRACT",
+                    q1.getValue(),
+                    q2.getValue(),
+                    0.0,
+                    false,
+                    e.getMessage()
+            );
+            repository.save(errorEntity);
 
-            repository.save(new QuantityMeasurementEntity("SUBTRACT", e.getMessage()));
             throw new QuantityMeasurementException(e.getMessage());
         }
     }
 
     @Override
     public double divide(QuantityDTO q1, QuantityDTO q2) throws QuantityMeasurementException {
-
         try {
-
             Quantity quantity1 = createQuantity(q1);
             Quantity quantity2 = createQuantity(q2);
 
             double result = quantity1.divide(quantity2);
 
-            repository.save(
-                    new QuantityMeasurementEntity(q1, q2, "DIVIDE", String.valueOf(result))
+            QuantityMeasurementEntity entity = new QuantityMeasurementEntity(
+                    q1.getMeasurementType(),
+                    "DIVIDE",
+                    q1.getValue(),
+                    q2.getValue(),
+                    result,
+                    true
             );
+
+            repository.save(entity);
 
             return result;
 
         } catch (Exception e) {
+            QuantityMeasurementEntity errorEntity = new QuantityMeasurementEntity(
+                    q1.getMeasurementType(),
+                    "DIVIDE",
+                    q1.getValue(),
+                    q2.getValue(),
+                    0.0,
+                    false,
+                    e.getMessage()
+            );
+            repository.save(errorEntity);
 
-            repository.save(new QuantityMeasurementEntity("DIVIDE", e.getMessage()));
             throw new QuantityMeasurementException(e.getMessage());
         }
     }
 
     private Quantity createQuantity(QuantityDTO dto) throws QuantityMeasurementException {
-
-        IMeasurable unit =
-                resolveUnit(dto.getMeasurementType(), dto.getUnit());
-
+        IMeasurable unit = resolveUnit(dto.getMeasurementType(), dto.getUnit());
         return new Quantity(dto.getValue(), unit);
     }
 
     private IMeasurable resolveUnit(String type, String unit) throws QuantityMeasurementException {
-
         switch (type.toUpperCase()) {
-
             case "LENGTH":
                 return LengthUnit.valueOf(unit.toUpperCase());
 

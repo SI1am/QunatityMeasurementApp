@@ -481,9 +481,3 @@ Current automated coverage includes:
 - H2 console for development verification
 - Actuator monitoring endpoints
 - security foundation ready for future enhancements
-
-## Interview Summary
-
-If you need to explain this project briefly:
-
-> This is a Quantity Measurement application that evolved through multiple use cases from basic object equality and unit conversion into a Spring Boot based REST service. In UC17, quantity operations such as compare, convert, add, subtract, multiply, and divide are exposed through REST APIs. Input is validated using DTOs, business logic is handled in the service layer, history is stored using Spring Data JPA in an H2 database, and errors are handled centrally using @ControllerAdvice. Swagger UI and Actuator are included for documentation and monitoring.

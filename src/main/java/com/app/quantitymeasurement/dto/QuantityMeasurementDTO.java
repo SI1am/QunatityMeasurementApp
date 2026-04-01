@@ -22,9 +22,7 @@ public class QuantityMeasurementDTO {
     private String resultMeasurementType;
     private String errorMessage;
     private boolean error;
-    @JsonIgnore
     private LocalDateTime createdAt;
-    @JsonIgnore
     private LocalDateTime updatedAt;
 
     public QuantityMeasurementDTO() {
